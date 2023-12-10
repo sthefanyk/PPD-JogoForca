@@ -36,17 +36,20 @@ const elementos = {
 };
 
 const palavras = {
-  facil: [{
-      palavra: 'série',
-      dica: 'Game Of Thrones é a melhor...'
-    },
-    {
-      palavra: 'ímpar',
-      dica: 'Se não é par é...'
-    },
-
+  facil: [
+    { palavra: 'série', dica: 'Game Of Thrones é a melhor...' },
+    { palavra: 'ímpar', dica: 'Se não é par é...' },
   ],
-
+  medio: [
+    { palavra: 'programa', dica: 'Conjunto de instruções para o computador.' },
+    { palavra: 'bicicleta', dica: 'Meio de transporte com duas rodas.' },
+    // Adicione mais palavras para a dificuldade média conforme necessário
+  ],
+  dificil: [
+    { palavra: 'computador', dica: 'Máquina eletrônica de processamento de dados.' },
+    { palavra: 'arquitetura', dica: 'A arte de projetar espaços e ambientes.' },
+    // Adicione mais palavras para a dificuldade difícil conforme necessário
+  ],
 };
 
 
@@ -276,15 +279,6 @@ function iniciarJogo(dificuldade) {
   mostrarPalavra();
 }
 
-
-
-
-
-
-
-
-
-
 function substituirCaractere(str, indice, novoCaractere) {
   // Esta função recebe uma string 'str', um índice 'indice' e um novo caractere 'novoCaractere'.
   // Ela substitui o caractere na posição 'indice' da string 'str' pelo novo caractere 'novoCaractere' 
@@ -324,4 +318,39 @@ function voltarInicio() {
 
   // Oculta a tela de cadastro ao definir o estilo 'display' como 'none'.
   elementos.telaCadastro.style.display = 'none';
+}
+
+function abrirTelaCadastroPalavra() {
+  elementos.telaCadastro.style.display = 'flex';
+  elementos.telaInicial.style.display = 'none';
+}
+
+function cadastrarPalavra() {
+  const dificuldadeSelecionada = document.querySelector('input[name="dificuldade"]:checked').value;
+
+  const novaPalavra = elementos.campos.palavra.value.trim();
+  const novaDica = elementos.campos.dica.value.trim();
+
+  if (novaPalavra.length === 0 || novaDica.length === 0) {
+    alert('Por favor, preencha a palavra e a dica.');
+    return;
+  }
+
+  const numLetrasDificuldade = {
+    facil: 5,
+    medio: 7,
+    dificil: 9,
+  };
+
+  if (novaPalavra.length !== numLetrasDificuldade[dificuldadeSelecionada]) {
+    alert(`A palavra deve ter ${numLetrasDificuldade[dificuldadeSelecionada]} letras para a dificuldade selecionada.`);
+    return;
+  }
+
+  palavras[dificuldadeSelecionada].push({ palavra: novaPalavra, dica: novaDica });
+
+  elementos.campos.palavra.value = '';
+  elementos.campos.dica.value = '';
+
+  voltarInicio();
 }
